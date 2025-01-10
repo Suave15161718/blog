@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sjjwn.mapper.WebsiteConfigMapper">
+
+    <update id="updateById">
+        update website_config
+        set config = #{bean.config}
+        where id = #{bean.id}
+    </update>
+    <select id="selectById" resultType="com.sjjwn.entity.WebsiteConfig">
+        select id, config
+        from website_config
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,114 @@
+server:
+  port: 7091
+
+spring:
+  application:
+    name: blog
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
+    hikari:
+      minimum-idle: 10
+      idle-timeout: 180000
+      maximum-pool-size: 100
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 60000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+    password: ${redis.password}
+    database: ${redis.database}
+    lettuce:
+      pool:
+        min-idle: 10
+        max-idle: 100
+        max-active: 100
+        max-wait: 10000
+
+  rabbitmq:
+    host: ${rabbitmq.host}
+    port: ${rabbitmq.port}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 3000
+
+  elasticsearch:
+    rest:
+      uris: ${elasticsearch.rest.uris}
+
+  mail:
+    host: smtp.qq.com
+    username: ${mail.username}
+    password: ${mail.password}
+    default-encoding: UTF-8
+    protocol: smtp
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+          ssl:
+            enable: true
+          starttls:
+            enable: true
+            required: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  cloud:
+    nacos:
+      config:
+#        namespace: d7430ff6-3df6-46df-b033-fba03010d808
+        namespace: 42ad8b15-813b-4895-b690-0846a76ac58c
+        server-addr: 117.72.120.53:8848
+        username: nacos
+        password: 1QAZ2wsx!@
+        shared-configs:
+          - dataId: blog.properties
+            refresh: true
+            group: DEFAULT_GROUP
+  profiles:
+    active: pro
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+jwt:
+  secret: ${jwt.jwt.secret}
+
+search:
+  mode: ${search.mode.mode}
+
+upload:
+  mode: ${upload.mode.mode}
+  oss:
+    url: ${oss.url}
+    endpoint: ${oss.endpoint}
+    accessKeyId: ${oss.accessKeyId}
+    accessKeySecret: ${oss.accessKeySecret}
+    bucketName: ${oss.bucketName}
+
+website:
+  url: ${web.url}
+
+qq:
+  app-id: ${qq.appId}
+  check-token-url: https://graph.qq.com/oauth2.0/me?access_token={access_token}
+  user-info-url: https://graph.qq.com/user/get_user_info?openid={openid}&access_token={access_token}&oauth_consumer_key={oauth_consumer_key}

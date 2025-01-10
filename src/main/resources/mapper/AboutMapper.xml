@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sjjwn.mapper.AboutMapper">
+
+    <update id="updateById" parameterType="com.sjjwn.entity.About">
+        update t_about
+        set content = #{bean.content}
+        where id = #{bean.id}
+    </update>
+    <select id="selectById" resultType="com.sjjwn.entity.About">
+        select id, content, create_time, update_time
+        from t_about
+        where id = #{id}
+    </select>
+</mapper>
