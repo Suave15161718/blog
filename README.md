@@ -1,4 +1,4 @@
-# blog
+# blog 博客系统
 
 #### 介绍
 一款vue+SpringBoot + SpringSecurity + Vue + Oss + RabbitMq + Mybatis + Redis + Nginx + Docker + Jenkins + Mail + Es + Quartz 前后端分离的博客系统，动态定时任务，文件支OSS云上传，使用ElasticSearch作为全文检索服务，支持QQ账号，邮箱登录。欢迎点击链接查看博客网站  https://bu.sjjwn.top
