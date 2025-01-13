@@ -1,6 +1,9 @@
 package com.sjjwn.util;
 
+import cn.hutool.json.JSONObject;
 import com.sjjwn.constant.CommonConstant;
+import com.sjjwn.entity.IpLocation;
+import com.sjjwn.entity.IpLocationPO;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,10 +17,15 @@ import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
@@ -26,6 +34,38 @@ public class IpUtil {
     private static DbSearcher searcher;
 
     private static Method method;
+
+    // 根据 IP 获取位置
+    @SuppressWarnings("all")
+    public static IpLocationPO getLocationByIp(String ip) throws Exception {
+        String url = "http://ip-api.com/json/" + ip + "?lang=zh-CN";
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+
+        // 获取响应数据
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+        reader.close();
+        // 解析 JSON 数据
+        JSONObject jsonResponse = new JSONObject(response.toString());
+        // 检查响应是否成功
+        jsonResponse.getInt("status");
+        IpLocation location = jsonResponse.toBean(IpLocation.class);
+        String regionName = location.getRegionName();//省
+        String city = location.getCity();//市
+        String addressFromCoordinates = OpenCageGeocodeExample.getAddressFromCoordinates(location.getLat(), location.getLon());
+        String[] split = addressFromCoordinates.split(",");
+        int i = split.length - 1;
+        String loadName = split[i];
+        IpLocationPO ipLocationPO = IpLocationPO.builder()
+                .province(regionName).city(city)
+                .address(loadName).msg(addressFromCoordinates).build();
+        return ipLocationPO;
+    }
 
     public static String getIpAddress(HttpServletRequest request) {
         String ipAddress = request.getHeader("X-Real-IP");

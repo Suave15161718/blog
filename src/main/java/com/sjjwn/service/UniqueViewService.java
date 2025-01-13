@@ -10,4 +10,6 @@ public interface UniqueViewService extends IService<UniqueView> {
 
     List<UniqueViewDTO> listUniqueViews();
 
+    void insertView(String ip) throws Exception;
+
 }

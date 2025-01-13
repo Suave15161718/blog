@@ -21,6 +21,7 @@ import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -35,6 +36,7 @@ import static com.sjjwn.constant.CommonConstant.*;
 import static com.sjjwn.constant.RedisConstant.*;
 
 @Service
+@Slf4j
 public class AuroraInfoServiceImpl implements AuroraInfoService {
 
     @Resource
@@ -86,6 +88,14 @@ public class AuroraInfoServiceImpl implements AuroraInfoService {
             } else {
                 redisService.hIncr(VISITOR_AREA, UNKNOWN, 1L);
             }
+            CompletableFuture.runAsync(() -> {
+                try {
+                    uniqueViewService.insertView(ipAddress);
+                } catch (Exception e) {
+                    log.error("记录异常日志中......方法{}","report");
+                    throw new RuntimeException();
+                }
+            });
             redisService.incr(BLOG_VIEWS_COUNT, 1);
             redisService.sAdd(UNIQUE_VISITOR, md5);
         }
