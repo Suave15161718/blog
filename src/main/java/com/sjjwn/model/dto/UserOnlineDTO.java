@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserOnlineDTO {
 
+    private Integer id;
+
     private Integer userInfoId;
 
     private String nickname;
