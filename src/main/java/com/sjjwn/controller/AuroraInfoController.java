@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
+import java.util.concurrent.ExecutionException;
+
 import static com.sjjwn.constant.OptTypeConstant.UPDATE;
 import static com.sjjwn.constant.OptTypeConstant.UPLOAD;
 
@@ -35,7 +37,7 @@ public class AuroraInfoController {
 
     @ApiOperation(value = "上报访客信息")
     @PostMapping("/api/report")
-    public ResultVO<?> report() {
+    public ResultVO<?> report() throws ExecutionException, InterruptedException {
         auroraInfoService.report();
         return ResultVO.ok();
     }

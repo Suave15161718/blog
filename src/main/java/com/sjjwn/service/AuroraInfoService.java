@@ -7,9 +7,11 @@ import com.sjjwn.model.dto.WebsiteConfigDTO;
 import com.sjjwn.model.vo.AboutVO;
 import com.sjjwn.model.vo.WebsiteConfigVO;
 
+import java.util.concurrent.ExecutionException;
+
 public interface AuroraInfoService {
 
-    void report();
+    void report() throws ExecutionException, InterruptedException;
 
     AuroraHomeInfoDTO getAuroraHomeInfo();
 

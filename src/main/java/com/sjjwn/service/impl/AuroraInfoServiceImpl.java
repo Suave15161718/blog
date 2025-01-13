@@ -30,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static com.sjjwn.constant.CommonConstant.*;
@@ -73,7 +74,7 @@ public class AuroraInfoServiceImpl implements AuroraInfoService {
     private HttpServletRequest request;
 
     @Override
-    public void report() {
+    public void report() throws ExecutionException, InterruptedException {
         String ipAddress = IpUtil.getIpAddress(request);
         UserAgent userAgent = IpUtil.getUserAgent(request);
         Browser browser = userAgent.getBrowser();
@@ -88,17 +89,19 @@ public class AuroraInfoServiceImpl implements AuroraInfoService {
             } else {
                 redisService.hIncr(VISITOR_AREA, UNKNOWN, 1L);
             }
-            CompletableFuture.runAsync(() -> {
-                try {
-                    uniqueViewService.insertView(ipAddress);
-                } catch (Exception e) {
-                    log.error("记录异常日志中......方法{}","report");
-                    throw new RuntimeException();
-                }
-            });
             redisService.incr(BLOG_VIEWS_COUNT, 1);
             redisService.sAdd(UNIQUE_VISITOR, md5);
+
         }
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            try {
+                uniqueViewService.insertView(ipAddress);
+            } catch (Exception e) {
+                log.error("记录异常日志中......方法{}", "report");
+                throw new RuntimeException();
+            }
+        });
+        future.get();
     }
 
     @SneakyThrows
