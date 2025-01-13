@@ -72,13 +72,16 @@ spring:
   cloud:
     nacos:
       config:
-#        namespace: d7430ff6-3df6-46df-b033-fba03010d808
-        namespace: 42ad8b15-813b-4895-b690-0846a76ac58c
-        server-addr: localhost:8848
+        namespace: d7430ff6-3df6-46df-b033-fba03010d808
+#        namespace: 42ad8b15-813b-4895-b690-0846a76ac58c
+        server-addr: 117.72.120.53:8848
         username: nacos
-        password: 1QAZ2wsx!@
+        password: 5275y@....
         shared-configs:
           - dataId: blog.properties
+            refresh: true
+            group: DEFAULT_GROUP
+          - dataId: nacos-config.properties
             refresh: true
             group: DEFAULT_GROUP
   profiles:
