@@ -6,4 +6,4 @@ ENV JAVA_OPTS="-Xmx8g -Xms4g -XX:MaxMetaspaceSize=2g -XX:MetaspaceSize=1g -XX:Pa
 
 EXPOSE 7091
 
-ENTRYPOINT java -jar blog-1.0.0.jar
+ENTRYPOINT java $JAVA_OPTS -jar blog-1.0.0.jar
