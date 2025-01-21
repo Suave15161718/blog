@@ -28,9 +28,8 @@ vue + SpringBoot + SpringSecurity + Vue + Oss + RabbitMq + Mybatis + Redis + Ngi
 #### 预览
 
 > 主页面
-![输入图片说明](https://foruda.gitee.com/images/1736496222352858274/34c57a79_9417704.png "屏幕截图")
+![image](https://github.com/user-attachments/assets/7e736de6-177b-4cd5-bacb-5b1fd323f65f)
 
-![输入图片说明](https://foruda.gitee.com/images/1736496268164081643/c3b83f19_9417704.png "屏幕截图")
 
 > 后台管理页面
 ![输入图片说明](https://foruda.gitee.com/images/1736496321961034676/ca5d9b7c_9417704.png "屏幕截图")
